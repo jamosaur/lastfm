@@ -157,6 +157,11 @@ class Lastfm
         return new Geo($this->apiKey, $this->apiSecret);
     }
 
+    public function library()
+    {
+        return new Library($this->apiKey, $this->apiSecret);
+    }
+
     /**
      * @return \Jamosaur\Lastfm\User
      */
