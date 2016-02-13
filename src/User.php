@@ -1,6 +1,6 @@
 <?php
 
-namespace Jamosaur\LastFm;
+namespace Jamosaur\Lastfm;
 
 use Jamosaur\Lastfm\Exceptions\InvalidPeriodException;
 
