@@ -22,8 +22,8 @@ class Lastfm
     /**
      * Lastfm constructor.
      *
-     * @param $apiKey
-     * @param $apiSecret
+     * @param string $apiKey
+     * @param string $apiSecret
      * @param null $sessionKey
      */
     public function __construct($apiKey, $apiSecret, $sessionKey = null)
@@ -36,7 +36,7 @@ class Lastfm
     /**
      * Sets the API Section to use.
      *
-     * @param $section
+     * @param string $section
      */
     public function __setSection($section)
     {
@@ -46,7 +46,7 @@ class Lastfm
     /**
      * Sets which API call to make.
      *
-     * @param $call
+     * @param string $call
      */
     public function __setCall($call)
     {
@@ -151,7 +151,7 @@ class Lastfm
 
     /**
      * @param $id
-     * @param $response
+     * @param \Httpful\Response $response
      * @throws \Jamosaur\Lastfm\Exceptions\InvalidMethodException
      * @throws \Jamosaur\Lastfm\Exceptions\InvalidServiceException
      */
