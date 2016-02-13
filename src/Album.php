@@ -17,7 +17,7 @@ class Album extends Lastfm
     public function __construct($apiKey, $apiSecret)
     {
         parent::__construct($apiKey, $apiSecret);
-        parent::__setSection('album');
+        $this->__setSection('album');
     }
 
     /**
@@ -34,7 +34,7 @@ class Album extends Lastfm
      */
     public function addTags($artist, $album, $tags)
     {
-        parent::__setCall('addTags');
+        $this->__setCall('addTags');
         if (is_null($artist) || is_null($album) || is_null($tags)) {
             throw new RequiredParameterMissingException;
         }
@@ -44,7 +44,7 @@ class Album extends Lastfm
         if (is_array($tags)) {
             $tags = implode(',', $tags);
         }
-        return parent::__makeCall([
+        return $this->__makeCall([
             'artist'    => $artist,
             'album'     => $album,
             'tags'      => $tags,
@@ -73,8 +73,8 @@ class Album extends Lastfm
         $lang = null
     ) {
         $this->requiredUnlessMBID($artist, $album, $mbid);
-        parent::__setCall('getInfo');
-        return parent::__makeCall([
+        $this->__setCall('getInfo');
+        return $this->__makeCall([
             'artist'        => $artist,
             'album'         => $album,
             'mbid'          => $mbid,
@@ -101,11 +101,11 @@ class Album extends Lastfm
     public function getTags($artist = null, $album = null, $mbid = null, $autocorrect = false, $user = null)
     {
         $this->requiredUnlessMBID($artist, $album, $mbid);
-        if (parent::getSessionKey() === null && $user === null) {
+        if ($this->getSessionKey() === null && $user === null) {
             throw new UserRequiredUnlessAuthException;
         }
-        parent::__setCall('getTags');
-        return parent::__makeCall([
+        $this->__setCall('getTags');
+        return $this->__makeCall([
             'artist'        => $artist,
             'album'         => $album,
             'mbid'          => $mbid,
@@ -128,8 +128,8 @@ class Album extends Lastfm
     public function getTopTags($artist = null, $album = null, $autocorrect = false, $mbid = null)
     {
         $this->requiredUnlessMBID($artist, $album, $mbid);
-        parent::__setCall('getTopTags');
-        return parent::__makeCall([
+        $this->__setCall('getTopTags');
+        return $this->__makeCall([
             'artist'        => $artist,
             'album'         => $album,
             'autocorrect'   => $autocorrect,
@@ -149,8 +149,8 @@ class Album extends Lastfm
      */
     public function removeTag($artist, $album, $tag)
     {
-        parent::__setCall('removeTag');
-        return parent::__makeCall([
+        $this->__setCall('removeTag');
+        return $this->__makeCall([
             'album'     => $album,
             'artist'    => $artist,
             'tag'       => $tag,
@@ -168,8 +168,8 @@ class Album extends Lastfm
      */
     public function albumSearch($album, $limit = 30, $page = 1)
     {
-        parent::__setCall('albumSearch');
-        return parent::__makeCall([
+        $this->__setCall('albumSearch');
+        return $this->__makeCall([
             'limit' => $limit,
             'page'  => $page,
             'album' => $album,

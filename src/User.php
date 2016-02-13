@@ -17,7 +17,7 @@ class User extends Lastfm
     public function __construct($apiKey, $apiSecret)
     {
         parent::__construct($apiKey, $apiSecret);
-        parent::__setSection('user');
+        $this->__setSection('user');
     }
 
     /**
@@ -45,8 +45,8 @@ class User extends Lastfm
      */
     public function getArtistTracks($artist, $page = 1, $start = null, $end = null)
     {
-        parent::__setCall('getArtistTracks');
-        return parent::__makeCall([
+        $this->__setCall('getArtistTracks');
+        return $this->__makeCall([
             'user'              => $this->user,
             'artist'            => $artist,
             'startTimestamp'    => $start,
@@ -57,8 +57,8 @@ class User extends Lastfm
 
     public function getFriends($recentTracks = false, $limit = 50, $page = 1)
     {
-        parent::__setCall('getFriends');
-        return parent::__makeCall([
+        $this->__setCall('getFriends');
+        return $this->__makeCall([
             'user'          => $this->user,
             'recenttracks'  => $recentTracks,
             'limit'         => $limit,
@@ -74,8 +74,8 @@ class User extends Lastfm
      */
     public function getInfo()
     {
-        parent::__setCall('getInfo');
-        return parent::__makeCall([
+        $this->__setCall('getInfo');
+        return $this->__makeCall([
             'user'  => $this->user,
         ]);
     }
@@ -90,8 +90,8 @@ class User extends Lastfm
      */
     public function getLovedTracks($limit = 50, $page = 1)
     {
-        parent::__setCall('getLovedTracks');
-        return parent::__makeCall([
+        $this->__setCall('getLovedTracks');
+        return $this->__makeCall([
             'user'  => $this->user,
             'limit' => $limit,
             'page'  => $page,
@@ -110,8 +110,8 @@ class User extends Lastfm
      */
     public function getPersonalTags($tag, $taggingType, $limit = 50, $page = 1)
     {
-        parent::__setCall('getPersonalTags');
-        return parent::__makeCall([
+        $this->__setCall('getPersonalTags');
+        return $this->__makeCall([
             'user'          => $this->user,
             'tag'           => $tag,
             'taggingtype'   => $taggingType,
@@ -135,8 +135,8 @@ class User extends Lastfm
      */
     public function getRecentTracks($extended = 0, $from = null, $to = null, $limit = 50, $page = 1)
     {
-        parent::__setCall('getRecentTracks');
-        return parent::__makeCall([
+        $this->__setCall('getRecentTracks');
+        return $this->__makeCall([
             'user' => $this->user,
             'extended' => $extended,
             'from' => $from,
@@ -159,8 +159,8 @@ class User extends Lastfm
     public function getTopAlbums($period = 'overall', $limit = 50, $page = 1)
     {
         $this->checkTimePeriod($period);
-        parent::__setCall('getTopAlbums');
-        return parent::__makeCall([
+        $this->__setCall('getTopAlbums');
+        return $this->__makeCall([
             'user'      => $this->user,
             'period'    => $period,
             'limit'     => $limit,
@@ -181,8 +181,8 @@ class User extends Lastfm
     public function getTopArtists($period = 'overall', $limit = 50, $page = 1)
     {
         $this->checkTimePeriod($period);
-        parent::__setCall('getTopArtists');
-        return parent::__makeCall([
+        $this->__setCall('getTopArtists');
+        return $this->__makeCall([
             'user'      => $this->user,
             'period'    => $period,
             'limit'     => $limit,
@@ -199,8 +199,8 @@ class User extends Lastfm
      */
     public function getTopTags($limit = 50)
     {
-        parent::__setCall('getTopTags');
-        return parent::__makeCall([
+        $this->__setCall('getTopTags');
+        return $this->__makeCall([
             'user'  => $this->user,
             'limit' => $limit,
         ]);
@@ -209,8 +209,8 @@ class User extends Lastfm
     public function getTopTracks($period = 'overall', $limit = 50, $page = 1)
     {
         $this->checkTimePeriod($period);
-        parent::__setCall('getTopTracks');
-        return parent::__makeCall([
+        $this->__setCall('getTopTracks');
+        return $this->__makeCall([
             'user'      => $this->user,
             'period'    => $period,
             'limit'     => $limit,
@@ -229,8 +229,8 @@ class User extends Lastfm
      */
     public function getWeeklyAlbumCharts($from = null, $to = null)
     {
-        parent::__setCall('getWeeklyAlbumCharts');
-        return parent::__makeCall([
+        $this->__setCall('getWeeklyAlbumCharts');
+        return $this->__makeCall([
             'user'  => $this->user,
             'from'  => $from,
             'to'    => $to,
@@ -248,8 +248,8 @@ class User extends Lastfm
      */
     public function getWeeklyArtistCharts($from = null, $to = null)
     {
-        parent::__setCall('getWeeklyArtistCharts');
-        return parent::__makeCall([
+        $this->__setCall('getWeeklyArtistCharts');
+        return $this->__makeCall([
             'user'  => $this->user,
             'from'  => $from,
             'to'    => $to,
@@ -264,8 +264,8 @@ class User extends Lastfm
      */
     public function getWeeklyChartList()
     {
-        parent::__setCall('getWeeklyChartList');
-        return parent::__makeCall([
+        $this->__setCall('getWeeklyChartList');
+        return $this->__makeCall([
             'user'  => $this->user,
         ]);
     }
@@ -281,8 +281,8 @@ class User extends Lastfm
      */
     public function getWeeklyTrackChart($from = null, $to = null)
     {
-        parent::__setCall('getWeeklyTrackChart');
-        return parent::__makeCall([
+        $this->__setCall('getWeeklyTrackChart');
+        return $this->__makeCall([
             'user'  => $this->user,
             'from'  => $from,
             'to'    => $to,
