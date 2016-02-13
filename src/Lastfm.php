@@ -142,6 +142,22 @@ class Lastfm
     }
 
     /**
+     * @return \Jamosaur\Lastfm\Chart
+     */
+    public function chart()
+    {
+        return new Chart($this->apiKey, $this->apiSecret);
+    }
+
+    /**
+     * @return \Jamosaur\Lastfm\Geo
+     */
+    public function geo()
+    {
+        return new Geo($this->apiKey, $this->apiSecret);
+    }
+
+    /**
      * @return \Jamosaur\Lastfm\User
      */
     public function user()
