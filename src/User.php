@@ -36,7 +36,6 @@ class User extends Lastfm
      * Get a list of tracks by a given artist scrobbled by this user, including scrobble time.
      * Can be limited to specific timeranges, defaults to all time.
      *
-     * @param string $user
      * @param string $artist
      * @param int $page
      * @param int $start

@@ -18,7 +18,14 @@ class Lastfm
     public $lang            = 'en';
     protected $section      = null;
     protected $call         = null;
-    
+
+    /**
+     * Lastfm constructor.
+     *
+     * @param $apiKey
+     * @param $apiSecret
+     * @param null $sessionKey
+     */
     public function __construct($apiKey, $apiSecret, $sessionKey = null)
     {
         $this->apiKey       = $apiKey;
@@ -26,17 +33,37 @@ class Lastfm
         $this->sessionKey   = $sessionKey;
     }
 
+    /**
+     * Sets the API Section to use.
+     *
+     * @param $section
+     */
     public function __setSection($section)
     {
         $this->section  = $section;
     }
 
+    /**
+     * Sets which API call to make.
+     *
+     * @param $call
+     */
     public function __setCall($call)
     {
         $this->call = $call;
     }
 
-    public function __makeCall($args = [], $requiresAuth = null)
+    /**
+     * Make an API call.
+     *
+     * @param array $args
+     * @param bool $requiresAuth
+     * @return array|object|string
+     * @throws \Jamosaur\Lastfm\Exceptions\InvalidMethodException
+     * @throws \Jamosaur\Lastfm\Exceptions\InvalidServiceException
+     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
+     */
+    public function __makeCall($args = [], $requiresAuth = false)
     {
         if ($requiresAuth && $this->sessionKey === null) {
             throw new RequiresSessionAuthException;
@@ -76,6 +103,7 @@ class Lastfm
      * Sets the language that results are returned in.
      * Accepts ISO 639-1 codes, e.g. `en`, `sv`
      * https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+     *
      * @param $lang
      * @return $this
      */
@@ -85,26 +113,48 @@ class Lastfm
         return $this;
     }
 
+    /**
+     * Get the language in which results are returned.
+     *
+     * @return string
+     */
     public function getLanguage()
     {
         return $this->lang;
     }
 
+    /**
+     * Get the session key
+     *
+     * @return null
+     */
     public function getSessionKey()
     {
         return $this->sessionKey;
     }
 
+    /**
+     * @return \Jamosaur\Lastfm\Album
+     */
     public function album()
     {
         return new Album($this->apiKey, $this->apiSecret);
     }
 
+    /**
+     * @return \Jamosaur\Lastfm\User
+     */
     public function user()
     {
         return new User($this->apiKey, $this->apiSecret);
     }
 
+    /**
+     * @param $id
+     * @param $response
+     * @throws \Jamosaur\Lastfm\Exceptions\InvalidMethodException
+     * @throws \Jamosaur\Lastfm\Exceptions\InvalidServiceException
+     */
     private function handleError($id, $response)
     {
         switch ($id) {
