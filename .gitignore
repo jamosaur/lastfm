@@ -1,0 +1,8 @@
+*.iml
+.idea/
+/vendor/
+composer.lock
+.DS_Store
+
+# Used for testing
+index.php

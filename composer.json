@@ -1,0 +1,46 @@
+{
+    "name": "jamosaur/lastfm",
+    "type": "library",
+    "description": "Wrapper for the last.fm API",
+    "keywords": [
+        "jamosaur",
+        "lastfm"
+    ],
+    "homepage": "https://github.com/jamosaur/lastfm",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "James Wallen-Jones",
+            "email": "j.wallen.jones@googlemail.com",
+            "homepage": "https://jamosaur.xyz",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php" : "~5.5|~7.0",
+        "nategood/httpful": "*"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : "4.*",
+        "scrutinizer/ocular": "~1.1",
+        "squizlabs/php_codesniffer": "~2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jamosaur\\Lastfm\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Jamosaur\\Lastfm\\Test\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}
