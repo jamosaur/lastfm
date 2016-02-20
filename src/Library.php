@@ -9,10 +9,11 @@ class Library extends Lastfm
      *
      * @param string $apiKey
      * @param string $apiSecret
+     * @param string $sessionKey
      */
-    public function __construct($apiKey, $apiSecret)
+    public function __construct($apiKey, $apiSecret, $sessionKey)
     {
-        parent::__construct($apiKey, $apiSecret);
+        parent::__construct($apiKey, $apiSecret, $sessionKey);
         $this->__setSection('library');
     }
 
@@ -22,12 +23,14 @@ class Library extends Lastfm
      * @param $user
      * @param int $limit
      * @param int $page
+     * @return array|object|string
      * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
      */
     public function getArtists($user, $limit = 50, $page = 1)
     {
         $this->__setCall('getArtists');
-        $this->__makeCall([
+
+        return $this->__makeCall([
             'user'  => $user,
             'limit' => $limit,
             'page'  => $page,

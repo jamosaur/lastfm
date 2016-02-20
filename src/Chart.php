@@ -9,10 +9,11 @@ class Chart extends Lastfm
      *
      * @param string $apiKey
      * @param string $apiSecret
+     * @param string $sessionKey
      */
-    public function __construct($apiKey, $apiSecret)
+    public function __construct($apiKey, $apiSecret, $sessionKey)
     {
-        parent::__construct($apiKey, $apiSecret);
+        parent::__construct($apiKey, $apiSecret, $sessionKey);
         $this->__setSection('chart');
     }
 

@@ -134,60 +134,80 @@ class Lastfm
     }
 
     /**
+     * Create a new album instance.
+     *
      * @return \Jamosaur\Lastfm\Album
      */
     public function album()
     {
-        return new Album($this->apiKey, $this->apiSecret);
+        return new Album($this->apiKey, $this->apiSecret, $this->sessionKey);
     }
 
     /**
+     * Create a new Chart instance.
+     *
      * @return \Jamosaur\Lastfm\Chart
      */
     public function chart()
     {
-        return new Chart($this->apiKey, $this->apiSecret);
+        return new Chart($this->apiKey, $this->apiSecret, $this->sessionKey);
     }
 
     /**
+     * Create a new Geo instance.
+     *
      * @return \Jamosaur\Lastfm\Geo
      */
     public function geo()
     {
-        return new Geo($this->apiKey, $this->apiSecret);
-    }
-
-    public function library()
-    {
-        return new Library($this->apiKey, $this->apiSecret);
+        return new Geo($this->apiKey, $this->apiSecret, $this->sessionKey);
     }
 
     /**
+     * Create a new Library instance.
+     *
+     * @return \Jamosaur\Lastfm\Library
+     */
+    public function library()
+    {
+        return new Library($this->apiKey, $this->apiSecret, $this->sessionKey);
+    }
+
+    /**
+     * Create a new Tag instance.
+     *
+     * @return \Jamosaur\Lastfm\Tag
+     */
+    public function tags()
+    {
+        return new Tag($this->apiKey, $this->apiSecret, $this->sessionKey);
+    }
+
+    /**
+     * Create a new User instance.
+     *
      * @return \Jamosaur\Lastfm\User
      */
     public function user()
     {
-        return new User($this->apiKey, $this->apiSecret);
+        return new User($this->apiKey, $this->apiSecret, $this->sessionKey);
     }
 
     /**
      * @param $id
-     * @param \Httpful\Response $response
+     * @throws \Exception
      * @throws \Jamosaur\Lastfm\Exceptions\InvalidMethodException
      * @throws \Jamosaur\Lastfm\Exceptions\InvalidServiceException
      */
-    private function handleError($id, $response)
+    private function handleError($id)
     {
         switch ($id) {
             case "2":
                 throw new InvalidServiceException;
-            break;
             case "3":
                 throw new InvalidMethodException;
-            break;
             default:
-                die($response->body->message);
-//                throw new \Exception;
+                throw new \Exception;
         }
     }
 }
