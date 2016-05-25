@@ -29,9 +29,9 @@ class Geo extends Lastfm
     {
         $this->__setCall('getTopArtists');
         $this->__makeCall([
-            'country'   => $country,
-            'limit'     => $limit,
-            'page'      => $page,
+            'country' => $country,
+            'limit'   => $limit,
+            'page'    => $page,
         ]);
     }
 
@@ -47,9 +47,9 @@ class Geo extends Lastfm
     {
         $this->__setCall('getTopTracks');
         $this->__makeCall([
-            'country'   => $country,
-            'limit'     => $limit,
-            'page'      => $page,
+            'country' => $country,
+            'limit'   => $limit,
+            'page'    => $page,
         ]);
     }
 }

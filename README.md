@@ -7,8 +7,7 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what
-PSRs you support to avoid any confusion with users and contributors.
+LastFM wrapper.
 
 ## Install
 
@@ -20,8 +19,48 @@ $ composer require jamosaur/lastfm
 
 ## Usage
 
+#### Standard Methods
+
 ``` php
 $lastfm = new Jamosaur\Lastfm\Lastfm('API_KEY', 'API_SECRET');
+
+$lastfm->user()->setUser('jaaaaaaaaaam')->getWeeklyTrackChart();
+```
+
+#### Authenticated methods
+
+The first step is to authenticate the user with last.fm
+
+``` php
+    Route::get('/auth/connect', function () {
+        return redirect()->url($lastFm->authGetURL(route('lfm.callback')));
+    });
+    
+    Route::get('/auth/connect', [
+        'as'    => 'lfm.callback',
+        'uses'  => 'LastFMController@callback'
+    ]);
+```
+
+_LastFMController.php_
+``` php
+    use Jamosaur\Lastfm\Lastfm;
+    ...
+    
+    public function callback(Request $request)
+    {
+        $lfm = new Lastfm('API_KEY', 'API_SECRET');
+        $session = $lfm->sessionKey($request->get('token'));
+        
+        // Add the session key to the user record
+        $user->lfm_session = $session->session->key;
+    }
+    
+    public function requiresAuth()
+    {
+        $lfm = Lastfm($user->lfmAPI, $user->lfmSecret, $user->lfm_session);
+        $tags = $lfm->artist()->addTags('Pendulum', ['sell-outs', 'used-to-be-good']);
+    }
 ```
 
 ## Change log

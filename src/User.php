@@ -30,6 +30,7 @@ class User extends Lastfm
     public function setUser($user)
     {
         $this->user = $user;
+
         return $this;
     }
 
@@ -47,23 +48,25 @@ class User extends Lastfm
     public function getArtistTracks($artist, $page = 1, $start = null, $end = null)
     {
         $this->__setCall('getArtistTracks');
+
         return $this->__makeCall([
-            'user'              => $this->user,
-            'artist'            => $artist,
-            'startTimestamp'    => $start,
-            'page'              => $page,
-            'endTimestamp'      => $end,
+            'user'           => $this->user,
+            'artist'         => $artist,
+            'startTimestamp' => $start,
+            'page'           => $page,
+            'endTimestamp'   => $end,
         ]);
     }
 
     public function getFriends($recentTracks = false, $limit = 50, $page = 1)
     {
         $this->__setCall('getFriends');
+
         return $this->__makeCall([
-            'user'          => $this->user,
-            'recenttracks'  => $recentTracks,
-            'limit'         => $limit,
-            'page'          => $page,
+            'user'         => $this->user,
+            'recenttracks' => $recentTracks,
+            'limit'        => $limit,
+            'page'         => $page,
         ]);
     }
 
@@ -76,8 +79,9 @@ class User extends Lastfm
     public function getInfo()
     {
         $this->__setCall('getInfo');
+
         return $this->__makeCall([
-            'user'  => $this->user,
+            'user' => $this->user,
         ]);
     }
 
@@ -92,6 +96,7 @@ class User extends Lastfm
     public function getLovedTracks($limit = 50, $page = 1)
     {
         $this->__setCall('getLovedTracks');
+
         return $this->__makeCall([
             'user'  => $this->user,
             'limit' => $limit,
@@ -112,12 +117,13 @@ class User extends Lastfm
     public function getPersonalTags($tag, $taggingType, $limit = 50, $page = 1)
     {
         $this->__setCall('getPersonalTags');
+
         return $this->__makeCall([
-            'user'          => $this->user,
-            'tag'           => $tag,
-            'taggingtype'   => $taggingType,
-            'limit'         => $limit,
-            'page'          => $page,
+            'user'        => $this->user,
+            'tag'         => $tag,
+            'taggingtype' => $taggingType,
+            'limit'       => $limit,
+            'page'        => $page,
         ]);
     }
 
@@ -137,13 +143,14 @@ class User extends Lastfm
     public function getRecentTracks($extended = 0, $from = null, $to = null, $limit = 50, $page = 1)
     {
         $this->__setCall('getRecentTracks');
+
         return $this->__makeCall([
-            'user' => $this->user,
+            'user'     => $this->user,
             'extended' => $extended,
-            'from' => $from,
-            'to' => $to,
-            'limit' => $limit,
-            'page' => $page,
+            'from'     => $from,
+            'to'       => $to,
+            'limit'    => $limit,
+            'page'     => $page,
         ]);
     }
 
@@ -161,132 +168,12 @@ class User extends Lastfm
     {
         $this->checkTimePeriod($period);
         $this->__setCall('getTopAlbums');
-        return $this->__makeCall([
-            'user'      => $this->user,
-            'period'    => $period,
-            'limit'     => $limit,
-            'page'      => $page
-        ]);
-    }
 
-    /**
-     * Get the top artists listened to by a user. You can stipulate a time period. Sends the overall chart by default.
-     *
-     * @param string $period
-     * @param int $limit
-     * @param int $page
-     * @return array|object|string
-     * @throws \Jamosaur\Lastfm\Exceptions\InvalidPeriodException
-     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
-     */
-    public function getTopArtists($period = 'overall', $limit = 50, $page = 1)
-    {
-        $this->checkTimePeriod($period);
-        $this->__setCall('getTopArtists');
         return $this->__makeCall([
-            'user'      => $this->user,
-            'period'    => $period,
-            'limit'     => $limit,
-            'page'      => $page
-        ]);
-    }
-
-    /**
-     *  Get the top tags used by this user.
-     *
-     * @param int $limit
-     * @return array|object|string
-     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
-     */
-    public function getTopTags($limit = 50)
-    {
-        $this->__setCall('getTopTags');
-        return $this->__makeCall([
-            'user'  => $this->user,
-            'limit' => $limit,
-        ]);
-    }
-
-    public function getTopTracks($period = 'overall', $limit = 50, $page = 1)
-    {
-        $this->checkTimePeriod($period);
-        $this->__setCall('getTopTracks');
-        return $this->__makeCall([
-            'user'      => $this->user,
-            'period'    => $period,
-            'limit'     => $limit,
-            'page'      => $page,
-        ]);
-    }
-
-    /**
-     * Get an album chart for a user profile, for a given date range.
-     * If no date range is supplied, it will return the most recent album chart for this user.
-     *
-     * @param int $from
-     * @param int $to
-     * @return array|object|string
-     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
-     */
-    public function getWeeklyAlbumCharts($from = null, $to = null)
-    {
-        $this->__setCall('getWeeklyAlbumCharts');
-        return $this->__makeCall([
-            'user'  => $this->user,
-            'from'  => $from,
-            'to'    => $to,
-        ]);
-    }
-
-    /**
-     * Get an artist chart for a user profile, for a given date range.
-     * If no date range is supplied, it will return the most recent artist chart for this user.
-     *
-     * @param null $from
-     * @param null $to
-     * @return array|object|string
-     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
-     */
-    public function getWeeklyArtistCharts($from = null, $to = null)
-    {
-        $this->__setCall('getWeeklyArtistCharts');
-        return $this->__makeCall([
-            'user'  => $this->user,
-            'from'  => $from,
-            'to'    => $to,
-        ]);
-    }
-
-    /**
-     *  Get a list of available charts for this user, expressed as date ranges which can be sent to the chart services.
-     *
-     * @return array|object|string
-     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
-     */
-    public function getWeeklyChartList()
-    {
-        $this->__setCall('getWeeklyChartList');
-        return $this->__makeCall([
-            'user'  => $this->user,
-        ]);
-    }
-
-    /**
-     * Get a track chart for a user profile, for a given date range.
-     * If no date range is supplied, it will return the most recent track chart for this user.
-     *
-     * @param int $from
-     * @param int $to
-     * @return array|object|string
-     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
-     */
-    public function getWeeklyTrackChart($from = null, $to = null)
-    {
-        $this->__setCall('getWeeklyTrackChart');
-        return $this->__makeCall([
-            'user'  => $this->user,
-            'from'  => $from,
-            'to'    => $to,
+            'user'   => $this->user,
+            'period' => $period,
+            'limit'  => $limit,
+            'page'   => $page,
         ]);
     }
 
@@ -305,11 +192,140 @@ class User extends Lastfm
             '1month',
             '3month',
             '6month',
-            '12month'
+            '12month',
         ];
         if (!in_array($period, $validPeriods, true)) {
             throw new InvalidPeriodException;
         }
+
         return false;
+    }
+
+    /**
+     * Get the top artists listened to by a user. You can stipulate a time period. Sends the overall chart by default.
+     *
+     * @param string $period
+     * @param int $limit
+     * @param int $page
+     * @return array|object|string
+     * @throws \Jamosaur\Lastfm\Exceptions\InvalidPeriodException
+     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
+     */
+    public function getTopArtists($period = 'overall', $limit = 50, $page = 1)
+    {
+        $this->checkTimePeriod($period);
+        $this->__setCall('getTopArtists');
+
+        return $this->__makeCall([
+            'user'   => $this->user,
+            'period' => $period,
+            'limit'  => $limit,
+            'page'   => $page,
+        ]);
+    }
+
+    /**
+     *  Get the top tags used by this user.
+     *
+     * @param int $limit
+     * @return array|object|string
+     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
+     */
+    public function getTopTags($limit = 50)
+    {
+        $this->__setCall('getTopTags');
+
+        return $this->__makeCall([
+            'user'  => $this->user,
+            'limit' => $limit,
+        ]);
+    }
+
+    public function getTopTracks($period = 'overall', $limit = 50, $page = 1)
+    {
+        $this->checkTimePeriod($period);
+        $this->__setCall('getTopTracks');
+
+        return $this->__makeCall([
+            'user'   => $this->user,
+            'period' => $period,
+            'limit'  => $limit,
+            'page'   => $page,
+        ]);
+    }
+
+    /**
+     * Get an album chart for a user profile, for a given date range.
+     * If no date range is supplied, it will return the most recent album chart for this user.
+     *
+     * @param int $from
+     * @param int $to
+     * @return array|object|string
+     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
+     */
+    public function getWeeklyAlbumCharts($from = null, $to = null)
+    {
+        $this->__setCall('getWeeklyAlbumCharts');
+
+        return $this->__makeCall([
+            'user' => $this->user,
+            'from' => $from,
+            'to'   => $to,
+        ]);
+    }
+
+    /**
+     * Get an artist chart for a user profile, for a given date range.
+     * If no date range is supplied, it will return the most recent artist chart for this user.
+     *
+     * @param null $from
+     * @param null $to
+     * @return array|object|string
+     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
+     */
+    public function getWeeklyArtistCharts($from = null, $to = null)
+    {
+        $this->__setCall('getWeeklyArtistCharts');
+
+        return $this->__makeCall([
+            'user' => $this->user,
+            'from' => $from,
+            'to'   => $to,
+        ]);
+    }
+
+    /**
+     *  Get a list of available charts for this user, expressed as date ranges which can be sent to the chart services.
+     *
+     * @return array|object|string
+     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
+     */
+    public function getWeeklyChartList()
+    {
+        $this->__setCall('getWeeklyChartList');
+
+        return $this->__makeCall([
+            'user' => $this->user,
+        ]);
+    }
+
+    /**
+     * Get a track chart for a user profile, for a given date range.
+     * If no date range is supplied, it will return the most recent track chart for this user.
+     *
+     * @param int $from
+     * @param int $to
+     * @return array|object|string
+     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
+     */
+    public function getWeeklyTrackChart($from = null, $to = null)
+    {
+        $this->__setCall('getWeeklyTrackChart');
+
+        return $this->__makeCall([
+            'user' => $this->user,
+            'from' => $from,
+            'to'   => $to,
+        ]);
     }
 }

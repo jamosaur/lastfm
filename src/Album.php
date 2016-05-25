@@ -25,9 +25,9 @@ class Album extends Lastfm
      * Add up to 10 tags to an album.
      * Requires authentication.
      *
-     * @param string $artist        | Artist Name
-     * @param string $album         | Album Name
-     * @param array|string $tags    | Tags, maximum of 10
+     * @param string $artist | Artist Name
+     * @param string $album | Album Name
+     * @param array|string $tags | Tags, maximum of 10
      * @return array|object|string
      * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
      * @throws \Jamosaur\Lastfm\Exceptions\TooManyTagsException
@@ -45,22 +45,23 @@ class Album extends Lastfm
         if (is_array($tags)) {
             $tags = implode(',', $tags);
         }
+
         return $this->__makeCall([
-            'artist'    => $artist,
-            'album'     => $album,
-            'tags'      => $tags,
+            'artist' => $artist,
+            'album'  => $album,
+            'tags'   => $tags,
         ], true);
     }
 
     /**
      * Get album info.
      *
-     * @param string $artist          | Artist Name | Required unless mbid is provided
-     * @param string $album           | Album Name | Required unless mbid is provided
-     * @param string $mbid            | musicbrainz ID
-     * @param boolean $autocorrect  | Corrects artist names
-     * @param string $username        | returns user's placount for album if provided
-     * @param string $lang            | Language to return biography in, uses ISO-639 alpha-2
+     * @param string $artist | Artist Name | Required unless mbid is provided
+     * @param string $album | Album Name | Required unless mbid is provided
+     * @param string $mbid | musicbrainz ID
+     * @param boolean $autocorrect | Corrects artist names
+     * @param string $username | returns user's placount for album if provided
+     * @param string $lang | Language to return biography in, uses ISO-639 alpha-2
      * @return array|object|string
      * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
      * @throws \Jamosaur\Lastfm\Exceptions\RequiredParameterMissingException
@@ -75,14 +76,30 @@ class Album extends Lastfm
     ) {
         $this->requiredUnlessMBID($artist, $album, $mbid);
         $this->__setCall('getInfo');
+
         return $this->__makeCall([
-            'artist'        => $artist,
-            'album'         => $album,
-            'mbid'          => $mbid,
-            'autocorrect'   => $autocorrect,
-            'username'      => $username,
-            'lang'          => (parent::getLanguage()) ? parent::getLanguage() : $lang,
+            'artist'      => $artist,
+            'album'       => $album,
+            'mbid'        => $mbid,
+            'autocorrect' => $autocorrect,
+            'username'    => $username,
+            'lang'        => (parent::getLanguage()) ? parent::getLanguage() : $lang,
         ]);
+    }
+
+    /**
+     * Throws RequiredParameterMissingException if artist/album is null as well as mbid
+     *
+     * @param string $artist
+     * @param string $album
+     * @param int $mbid
+     * @throws \Jamosaur\Lastfm\Exceptions\RequiredParameterMissingException
+     */
+    private function requiredUnlessMBID($artist, $album, $mbid)
+    {
+        if ($artist == null && $mbid == null || $album == null && $mbid == null) {
+            throw new RequiredParameterMissingException;
+        }
     }
 
     /**
@@ -106,12 +123,13 @@ class Album extends Lastfm
             throw new UserRequiredUnlessAuthException;
         }
         $this->__setCall('getTags');
+
         return $this->__makeCall([
-            'artist'        => $artist,
-            'album'         => $album,
-            'mbid'          => $mbid,
-            'autocorrect'   => $autocorrect,
-            'user'          => $user,
+            'artist'      => $artist,
+            'album'       => $album,
+            'mbid'        => $mbid,
+            'autocorrect' => $autocorrect,
+            'user'        => $user,
         ]);
     }
 
@@ -130,11 +148,12 @@ class Album extends Lastfm
     {
         $this->requiredUnlessMBID($artist, $album, $mbid);
         $this->__setCall('getTopTags');
+
         return $this->__makeCall([
-            'artist'        => $artist,
-            'album'         => $album,
-            'autocorrect'   => $autocorrect,
-            'mibd'          => $mbid,
+            'artist'      => $artist,
+            'album'       => $album,
+            'autocorrect' => $autocorrect,
+            'mibd'        => $mbid,
         ]);
     }
 
@@ -151,10 +170,11 @@ class Album extends Lastfm
     public function removeTag($artist, $album, $tag)
     {
         $this->__setCall('removeTag');
+
         return $this->__makeCall([
-            'album'     => $album,
-            'artist'    => $artist,
-            'tag'       => $tag,
+            'album'  => $album,
+            'artist' => $artist,
+            'tag'    => $tag,
         ], true);
     }
 
@@ -170,25 +190,11 @@ class Album extends Lastfm
     public function albumSearch($album, $limit = 30, $page = 1)
     {
         $this->__setCall('albumSearch');
+
         return $this->__makeCall([
             'limit' => $limit,
             'page'  => $page,
             'album' => $album,
         ]);
-    }
-
-    /**
-     * Throws RequiredParameterMissingException if artist/album is null as well as mbid
-     *
-     * @param string $artist
-     * @param string $album
-     * @param int $mbid
-     * @throws \Jamosaur\Lastfm\Exceptions\RequiredParameterMissingException
-     */
-    private function requiredUnlessMBID($artist, $album, $mbid)
-    {
-        if ($artist == null && $mbid == null || $album == null && $mbid == null) {
-            throw new RequiredParameterMissingException;
-        }
     }
 }

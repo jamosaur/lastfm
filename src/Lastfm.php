@@ -9,15 +9,14 @@ use Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException;
 
 class Lastfm
 {
-    protected $apiURL       = 'http://ws.audioscrobbler.com/2.0/';
-
-    private $apiKey         = null;
-    private $apiSecret      = null;
-    private $sessionKey     = null;
-
-    public $lang            = 'en';
-    protected $section      = null;
-    protected $call         = null;
+    public $lang = 'en';
+    protected $apiURL = 'http://ws.audioscrobbler.com/2.0/';
+    protected $authURL = 'http://www.last.fm/api/auth/';
+    protected $section = null;
+    protected $call = null;
+    private $apiKey = null;
+    private $apiSecret = null;
+    private $sessionKey = null;
 
     /**
      * Lastfm constructor.
@@ -28,9 +27,78 @@ class Lastfm
      */
     public function __construct($apiKey, $apiSecret, $sessionKey = null)
     {
-        $this->apiKey       = $apiKey;
-        $this->apiSecret    = $apiSecret;
-        $this->sessionKey   = $sessionKey;
+        $this->apiKey = $apiKey;
+        $this->apiSecret = $apiSecret;
+        $this->sessionKey = $sessionKey;
+    }
+
+    /**
+     * Sets the language that results are returned in.
+     * Accepts ISO 639-1 codes, e.g. `en`, `sv`
+     * https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
+     *
+     * @param $lang
+     * @return $this
+     */
+    public function language($lang)
+    {
+        $this->lang = $lang;
+
+        return $this;
+    }
+
+    /**
+     * Get the language in which results are returned.
+     *
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->lang;
+    }
+
+    /**
+     * Get the session key
+     *
+     * @return null
+     */
+    public function getSessionKey()
+    {
+        return $this->sessionKey;
+    }
+
+    /**
+     * This is the first part of authentication, this will return an authentication URL
+     * that you will need to redirect to so that the user can log in to the last.fm
+     * service. The callback URL is where the user will be redirected to after.
+     *
+     * @param $callbackURL
+     * @return string
+     */
+    public function authGetURL($callbackURL)
+    {
+        return $this->authURL . '?' . http_build_query([
+            'api_key' => $this->apiKey,
+            'cb'      => $callbackURL,
+        ]);
+    }
+
+    /**
+     * This is the second part of authentication. This returns a session key which
+     * can be stored in a database with the user information.
+     *
+     * @param $token
+     * @return array|object|string
+     * @throws \Jamosaur\Lastfm\Exceptions\RequiresSessionAuthException
+     */
+    public function sessionKey($token)
+    {
+        $this->__setSection('auth');
+        $this->__setCall('getSession');
+
+        return $this->__makeCall([
+            'token' => $token,
+        ]);
     }
 
     /**
@@ -40,7 +108,7 @@ class Lastfm
      */
     public function __setSection($section)
     {
-        $this->section  = $section;
+        $this->section = $section;
     }
 
     /**
@@ -70,9 +138,9 @@ class Lastfm
         }
 
         $query = array_merge([
-            'method'    => $this->section.'.'.$this->call,
-            'api_key'   => $this->apiKey,
-            'format'    => 'json',
+            'method'  => $this->section . '.' . $this->call,
+            'api_key' => $this->apiKey,
+            'format'  => 'json',
         ], $args);
 
         if ($requiresAuth) {
@@ -88,49 +156,34 @@ class Lastfm
             foreach ($formatlessQuery as $k => $v) {
                 $signature .= "$k$v";
             }
-            $query['api_sig'] = md5($signature.$this->apiSecret);
+            $query['api_sig'] = md5($signature . $this->apiSecret);
         }
 
-        $response = Request::get($this->apiURL.'?'.http_build_query($query))->send();
+        $response = Request::get($this->apiURL . '?' . http_build_query($query))->send();
 
         if (isset($response->body->error)) {
             $this->handleError($response->body->id, $response);
         }
+
         return $response->body;
     }
 
     /**
-     * Sets the language that results are returned in.
-     * Accepts ISO 639-1 codes, e.g. `en`, `sv`
-     * https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes
-     *
-     * @param $lang
-     * @return $this
+     * @param $id
+     * @throws \Exception
+     * @throws \Jamosaur\Lastfm\Exceptions\InvalidMethodException
+     * @throws \Jamosaur\Lastfm\Exceptions\InvalidServiceException
      */
-    public function language($lang)
+    private function handleError($id)
     {
-        $this->lang = $lang;
-        return $this;
-    }
-
-    /**
-     * Get the language in which results are returned.
-     *
-     * @return string
-     */
-    public function getLanguage()
-    {
-        return $this->lang;
-    }
-
-    /**
-     * Get the session key
-     *
-     * @return null
-     */
-    public function getSessionKey()
-    {
-        return $this->sessionKey;
+        switch ($id) {
+            case "2":
+                throw new InvalidServiceException;
+            case "3":
+                throw new InvalidMethodException;
+            default:
+                throw new \Exception;
+        }
     }
 
     /**
@@ -184,6 +237,16 @@ class Lastfm
     }
 
     /**
+     * Return a new Track instance.
+     *
+     * @return \Jamosaur\Lastfm\Track
+     */
+    public function track()
+    {
+        return new Track($this->apiKey, $this->apiSecret, $this->sessionKey);
+    }
+
+    /**
      * Create a new User instance.
      *
      * @return \Jamosaur\Lastfm\User
@@ -191,23 +254,5 @@ class Lastfm
     public function user()
     {
         return new User($this->apiKey, $this->apiSecret, $this->sessionKey);
-    }
-
-    /**
-     * @param $id
-     * @throws \Exception
-     * @throws \Jamosaur\Lastfm\Exceptions\InvalidMethodException
-     * @throws \Jamosaur\Lastfm\Exceptions\InvalidServiceException
-     */
-    private function handleError($id)
-    {
-        switch ($id) {
-            case "2":
-                throw new InvalidServiceException;
-            case "3":
-                throw new InvalidMethodException;
-            default:
-                throw new \Exception;
-        }
     }
 }

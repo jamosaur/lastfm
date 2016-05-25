@@ -27,9 +27,10 @@ class Tag extends Lastfm
     public function getInfo($tag)
     {
         $this->__setCall('getInfo');
+
         return $this->__makeCall([
-            'tag'   => $tag,
-            'lang'  => $this->getLanguage(),
+            'tag'  => $tag,
+            'lang' => $this->getLanguage(),
         ]);
     }
 
@@ -43,8 +44,9 @@ class Tag extends Lastfm
     public function getSimilar($tag)
     {
         $this->__setCall('getSimilar');
+
         return $this->__makeCall([
-            'tag'   => $tag,
+            'tag' => $tag,
         ]);
     }
 
@@ -60,6 +62,7 @@ class Tag extends Lastfm
     public function getTopAlbums($tag, $limit = 50, $page = 1)
     {
         $this->__setCall('getTopAlbums');
+
         return $this->__makeCall([
             'tag'   => $tag,
             'limit' => $limit,
@@ -79,6 +82,7 @@ class Tag extends Lastfm
     public function getTopArtists($tag, $limit = 50, $page = 1)
     {
         $this->__setCall('getTopArtists');
+
         return $this->__makeCall([
             'tag'   => $tag,
             'limit' => $limit,
@@ -95,6 +99,7 @@ class Tag extends Lastfm
     public function getTopTags()
     {
         $this->__setCall('getTopTags');
+
         return $this->__makeCall();
     }
 
@@ -110,6 +115,7 @@ class Tag extends Lastfm
     public function getTopTracks($tag, $limit = 50, $page = 1)
     {
         $this->__setCall('getTopTracks');
+
         return $this->__makeCall([
             'tag'   => $tag,
             'limit' => $limit,
@@ -127,8 +133,9 @@ class Tag extends Lastfm
     public function getWeeklyChartList($tag)
     {
         $this->__setCall('getWeeklyChartList');
+
         return $this->__makeCall([
-            'tag'   => $tag,
+            'tag' => $tag,
         ]);
     }
 }
